@@ -65,7 +65,29 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     func longpress(gestureRecognizer: UIGestureRecognizer) {
-        print("long press")
+        
+        // make the gestureRecognizer take the info once even user holds it more then 2 seconds
+        
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            
+            let touchPoint = gestureRecognizer.location(in: self.map)
+            
+            let newCoordinate = self.map.convert(touchPoint, toCoordinateFrom: self.map)
+            
+            print(newCoordinate)
+            
+            let annotation = MKPointAnnotation()
+            
+            annotation.coordinate = newCoordinate
+            
+            annotation.title = "Temp title"
+            
+            self.map.addAnnotation(annotation)
+            
+        }
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
