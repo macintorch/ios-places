@@ -15,7 +15,13 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // implement long press gesture
+        let uiLongPress = UILongPressGestureRecognizer (target: self, action: #selector(ViewController.longpress(gestureRecognizer:)))
+        
+        uiLongPress.minimumPressDuration = 2
+        
+        map.addGestureRecognizer(uiLongPress)
         
         print(activePlace)
         
@@ -25,8 +31,11 @@ class ViewController: UIViewController, MKMapViewDelegate {
             if places.count > activePlace {
                 
                 if let name = places[activePlace]["name"] {
+                    
                     if let lat = places[activePlace]["lat"] {
+                        
                         if let lon = places[activePlace]["lon"] {
+                            
                             if let latitude = Double(lat) {
                                 
                                 if let longitude = Double(lon) {
@@ -53,6 +62,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 }
             }
         }
+    }
+    
+    func longpress(gestureRecognizer: UIGestureRecognizer) {
+        print("long press")
     }
 
     override func didReceiveMemoryWarning() {
