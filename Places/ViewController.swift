@@ -119,6 +119,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 
                 places.append(["name":title, "lat":String(newCoordinate.latitude), "lon":String(newCoordinate.longitude)])
                 
+                UserDefaults.standard.set(places, forKey: "places")
+                
                 
                 print(places)
 
@@ -137,6 +139,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let region = MKCoordinateRegion(center: location, span: span)
         
         self.map.setRegion(region, animated: true)
+        
+        self.map.showsUserLocation = true
         
         
     }

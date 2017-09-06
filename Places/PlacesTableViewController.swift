@@ -28,11 +28,24 @@ class PlacesTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        if let tempPlaces = UserDefaults.standard.object(forKey: "places") as? [Dictionary<String, String>] {
+            
+            places = tempPlaces
+            
+        }
         // to check if array is empty
         if places.count == 1 && places[0].count == 0 {
+            
             places.remove(at: 0)
+            
             // 1 default place
             places.append(["name":"Taj Mahal", "lat":"27.175277", "lon":"78.042128"])
+            
+            // saves data to userdefaults
+            UserDefaults.standard.set(places, forKey: "places")
+            
+            
         }
         
         // set back activePlace back to -1 everytime table is loaded
@@ -49,6 +62,8 @@ class PlacesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             places.remove(at: indexPath.row)
+            
+            UserDefaults.standard.set(places, forKey: "places")
             
             placesTable.reloadData()
         }
