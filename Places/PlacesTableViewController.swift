@@ -12,6 +12,9 @@ import UIKit
 
 var places = [Dictionary<String, String>()]
 
+// to pass information new active place to map VC
+var activePlace = -1
+
 class PlacesTableViewController: UITableViewController {
     
     
@@ -20,6 +23,11 @@ class PlacesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         // to check if array is empty
         if places.count == 1 && places[0].count == 0 {
             places.remove(at: 0)
@@ -27,8 +35,9 @@ class PlacesTableViewController: UITableViewController {
             places.append(["name":"Taj Mahal", "lat":"27.175277", "lon":"78.042128"])
         }
         
+        // set back activePlace back to -1 everytime table is loaded
+        activePlace = -1
         placesTable.reloadData()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,6 +72,9 @@ class PlacesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        activePlace = indexPath.row
+        
         performSegue(withIdentifier: "toMap", sender: nil)
     }
  
