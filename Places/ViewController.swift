@@ -74,16 +74,46 @@ class ViewController: UIViewController, MKMapViewDelegate {
             
             let newCoordinate = self.map.convert(touchPoint, toCoordinateFrom: self.map)
             
-            print(newCoordinate)
+            let location = CLLocation(latitude: newCoordinate.latitude, longitude: newCoordinate.longitude)
             
-            let annotation = MKPointAnnotation()
+            var title = ""
             
-            annotation.coordinate = newCoordinate
-            
-            annotation.title = "Temp title"
-            
-            self.map.addAnnotation(annotation)
-            
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
+                
+                if error != nil {
+                    print(error)
+                } else {
+                    if let placemark = placemarks?[0] {
+                        
+                        if placemark.subThoroughfare != nil {
+                            title += placemark.subThoroughfare! + " "
+                        }
+                        
+                        if placemark.thoroughfare != nil {
+                            title += placemark.thoroughfare! + " "
+                        }
+                        
+                    }
+                }
+                
+                if title == "" {
+                    title = "Added \(NSDate())"
+                }
+                
+                let annotation = MKPointAnnotation()
+                
+                annotation.coordinate = newCoordinate
+                
+                annotation.title = title
+                
+                self.map.addAnnotation(annotation)
+                
+                places.append(["name":title, "lat":String(newCoordinate.latitude), "lon":String(newCoordinate.longitude)])
+                
+                
+                print(places)
+
+            })
         }
         
         
